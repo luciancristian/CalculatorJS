@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <input
+      type="text"
+      class="fresh"
+      id="var1"
+      name="var1"
+      required
+      size="10"
+      oninput="verificationNumber1()"
+    />
+    <input
+      type="text"
+      class="fresh"
+      id="var2"
+      name="var2"
+      required
+      size="10"
+      oninput="verificationNumber2()"
+    />
+    <input
+      type="text"
+      class="fresh"
+      id="operand"
+      name="operand"
+      required
+      size="10"
+      oninput="verificationOperand()"
+    />
+
+    <input id="rezultat" />
+
+    <button id="btn" disabled>FindResult</button> <br />
+    <div style="color:red;" id="errorMessage"></div>
+
+    <style>
+      .error {
+        border-color: red;
+      }
+      .valid {
+        border-color: green;
+      }
+    </style>
+
+    <script>
+      function plus(a, b) {
+        return a + b;
+      }
+
+      function minus(a, b) {
+        return a - b;
+      }
+
+      function multiply(a, b) {
+        return a * b;
+      }
+
+      function divide(a, b) {
+        return a / b;
+      }
+
+      function modulo(a, b) {
+        //true modulo implementation not just the remainder
+        if (a < 0) {
+          a = b - (Math.abs(a) % b);
+        }
+        return a % b;
+      }
+
+      let btnn = document.getElementById("btn");
+
+      let var1 = document.getElementById("var1");
+      let var2 = document.getElementById("var2");
+      let float_var1 = parseFloat(var1.value);
+      let float_var2 = parseFloat(var2.value);
+      let operand = document.getElementById("operand");
+
+      function verificationNumber1() {
+        const input = document.getElementsByTagName("input");
+        let var1 = document.getElementById("var1");
+        let float_var1 = parseFloat(var1.value);
+        if (isNaN(float_var1)) {
+          disableCalc();
+          input[0].classList.replace("fresh", "error");
+          input[0].classList.replace("valid", "error");
+          errorMessage.innerHTML = "Incorrect input 1st box";
+        } else {
+          input[0].classList.replace("fresh", "valid");
+          input[0].classList.replace("error", "valid");
+          enableCalc();
+          errorMessage.innerHTML = "";
+        }
+      }
+
+      function verificationNumber2() {
+        const input = document.getElementsByTagName("input");
+        let var2 = document.getElementById("var2");
+        let float_var2 = parseFloat(var2.value);
+        if (isNaN(float_var2)) {
+          disableCalc();
+          input[1].classList.replace("valid", "error");
+          input[1].classList.replace("fresh", "error");
+          errorMessage.innerHTML = "Incorrect input 2nd box";
+        } else {
+          input[1].classList.replace("fresh", "valid");
+          input[1].classList.replace("error", "valid");
+          enableCalc();
+          errorMessage.innerHTML = "";
+        }
+      }
+
+      function verificationOperand() {
+        const input = document.getElementsByTagName("input");
+        let operand = document.getElementById("operand");
+        if (["-", "+", "*", "%", "/"].indexOf(operand.value) < 0) {
+          disableCalc();
+          input[2].classList.replace("valid", "error");
+          input[2].classList.replace("fresh", "error");
+          errorMessage.innerHTML = "Incorrect input 3nd box";
+        } else {
+          input[2].classList.replace("fresh", "valid");
+          input[2].classList.replace("error", "valid");
+          enableCalc();
+          errorMessage.innerHTML = "";
+        }
+      }
+
+      function enableCalc() {
+        if (
+          var1.className == "valid" &&
+          var2.className == "valid" &&
+          operand.className == "valid"
+        ) {
+          btnn.disabled = false;
+          btnn.addEventListener("click", calculator);
+        }
+      }
+
+      function disableCalc() {
+        btnn.disabled = true;
+      }
+
+      //let errorMessage = document.getElementById("errorMessage");
+
+      function calculator(e) {
+        let var1 = document.getElementById("var1");
+        let var2 = document.getElementById("var2");
+        let float_var1 = parseFloat(var1.value);
+        let float_var2 = parseFloat(var2.value);
+        let rez = "Not Implemented!";
+        let operand = document.getElementById("operand");
+
+        switch (operand.value.toString()) {
+          case "+":
+            rez = plus(float_var1, float_var2);
+            break;
+
+          case "-":
+            rez = minus(float_var1, float_var2);
+            break;
+
+          case "*":
+            rez = multiply(float_var1, float_var2);
+            break;
+
+          case "/":
+            rez = divide(float_var1, float_var2);
+            break;
+
+          case "%":
+            rez = modulo(float_var1, float_var2);
+            break;
+
+          //default:
+          //rez = "not implemented";
+        }
+        rezultat.value = rez;
+      }
+    </script>
+  </body>
+</html>
